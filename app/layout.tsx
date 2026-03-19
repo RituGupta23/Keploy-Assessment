@@ -5,8 +5,8 @@ import TableOfContents from '@/components/TableOfContents'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen dark:bg-[#0f0f0f] bg-gray-50 dark:text-white text-gray-900 transition-colors duration-300">
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen transition-colors duration-300">
         <ThemeProvider>
           <Navbar />
 
@@ -16,8 +16,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </main>
 
-            {/* TOC sidebar */}
-            <aside className="lg:block">
+            {/* Sidebar */}
+            <aside className="hidden lg:block">
               <TableOfContents />
             </aside>
           </div>

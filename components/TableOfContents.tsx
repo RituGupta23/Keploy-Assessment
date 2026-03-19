@@ -41,7 +41,7 @@ export default function TableOfContents() {
 
   return (
     <nav className="sticky top-20 text-md">
-      <p className="text-xs font-semibold uppercase tracking-widest dark:text-[#888] text-gray-400 mb-3">
+      <p className="text-xs font-semibold uppercase tracking-widest text-keploy-muted mb-3">
         On this page
       </p>
       <ul className="space-y-1">
@@ -52,7 +52,7 @@ export default function TableOfContents() {
               className={`block py-1 transition-colors truncate ${
                 active === id
                   ? 'text-[#FF6B35] font-medium'
-                  : 'dark:text-[#888] text-gray-400 dark:hover:text-gray-300 hover:text-gray-600'
+                  : 'text-keploy-muted dark:hover:text-gray-300 hover:text-gray-900'
               }`}
             >
               {label}

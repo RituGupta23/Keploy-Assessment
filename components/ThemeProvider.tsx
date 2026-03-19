@@ -12,21 +12,41 @@ export function useTheme() {
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [dark, setDark] = useState(false)
+  const [dark, setDark] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      setDark(savedTheme === 'dark')
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      setDark(prefersDark)
+    }
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     if (dark) {
       document.documentElement.classList.add('dark')
       document.documentElement.classList.remove('light')
+      localStorage.setItem('theme', 'dark')
     } else {
       document.documentElement.classList.remove('dark')
       document.documentElement.classList.add('light')
+      localStorage.setItem('theme', 'light')
     }
-  }, [dark])
+  }, [dark, mounted])
 
+  // Prevent hydration mismatch by only rendering children after mount
   return (
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(d => !d) }}>
-      {children}
+      <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   )
 }
+

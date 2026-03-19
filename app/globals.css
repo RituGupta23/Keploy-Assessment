@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
+@theme {
+  --color-keploy-orange: #FF6B35;
+  --color-keploy-dark: var(--background);
+  --color-keploy-card: var(--keploy-card);
+  --color-keploy-border: var(--keploy-border);
+  --color-keploy-muted: var(--keploy-muted);
+}
+
+/* Enable class-based dark mode variant in Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --keploy-card: #f3f4f6;
+  --keploy-border: #e5e7eb;
+  --keploy-muted: #6b7280;
+}
+
+.dark {
   --background: #0f0f0f;
   --foreground: #ffffff;
+  --keploy-card: #1a1a1a;
+  --keploy-border: #2a2a2a;
+  --keploy-muted: #888888;
 }
 
 * {
@@ -14,10 +36,11 @@ html {
 }
 
 body {
-  background-color: #0f0f0f;
-  color: #ffffff;
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Scrollbar */
@@ -26,10 +49,10 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--keploy-border);
   border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -39,7 +62,7 @@ body {
 /* Selection */
 ::selection {
   background: #FF6B3540;
-  color: #fff;
+  color: inherit;
 }
 
 /* Highlight.js inside pre override */
@@ -50,17 +73,4 @@ pre code.hljs {
   font-size: 0.85rem;
   line-height: 1.7;
 }
-
-/* Light mode */
-html.light body {
-  background-color: #f9fafb;
-  color: #111;
-}
-html.light .bg-keploy-dark { background-color: #fff; }
-html.light .text-gray-300 { color: #374151; }
-html.light .text-gray-400 { color: #6b7280; }
-html.light .border-keploy-border { border-color: #e5e7eb; }
-html.light .bg-keploy-card { background-color: #f3f4f6; }
-html.light .text-white { color: #111 !important; }
-html.light pre { background-color: #1e1e1e !important; }
 

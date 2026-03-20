@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* Footer */}
           <footer className="border-t dark:border-[#2a2a2a] border-gray-200 py-6 text-center dark:text-[#888] text-gray-500 text-sm">
-            Built for Keploy · Powered by Keploy + MDX
+            Keploy makes API Testing simple by Automation
           </footer>
         </ThemeProvider>
       </body>

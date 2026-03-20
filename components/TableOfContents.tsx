@@ -5,15 +5,14 @@ import React, { useState, useEffect } from 'react'
 const sections = [
   { id: 'what-is-keploy', label: 'What is Keploy?' },
   { id: 'prerequisites', label: 'Prerequisites' },
-  { id: 'the-app-well-use', label: 'The App We\'ll Use' },
-  { id: 'step-1-install-keploy', label: 'Step 1: Install Keploy' },
-  { id: 'step-2-clone-the-app', label: 'Step 2: Clone the App' },
-  { id: 'step-3-start-postgres', label: 'Step 3: Start Postgres' },
-  { id: 'step-4-run-the-app', label: 'Step 4: Run the App' },
-  { id: 'step-5-record-test-cases', label: 'Step 5: Record Tests' },
-  { id: 'step-6-run-tests', label: 'Step 6: Run Tests' },
-  { id: 'catch-a-bug', label: 'Catch a Bug 🐛' },
-  { id: 'whats-next', label: "What's Next?" },
+  { id: 'step-1-clone', label: 'Step 1: Clone the Sample Application' },
+  { id: 'step-2-configure', label: 'Step 2: Configure the Database Host' },
+  { id: 'step-3-start-recording', label: 'Step 3: Start Recording API Calls' },
+  { id: 'step-4-generate-test-cases', label: 'Step 4: Generate Test Cases' },
+  { id: 'step-5-understand-what-keploy-generated', label: 'Step 5: Understand What Keploy Generated' },
+  { id: 'step-6-run-the-generated-test-cases', label: 'Step 6: Run the Generated Test Cases' },
+  { id: 'why-use-keploy', label: "Why use Keploy?" },
+  { id: 'wrapping-up', label: "Wrapping Up 🎉"}
 ]
 
 export default function TableOfContents() {
@@ -41,7 +40,7 @@ export default function TableOfContents() {
 
   return (
     <nav className="sticky top-20 text-md">
-      <p className="text-xs font-semibold uppercase tracking-widest text-keploy-muted mb-3">
+      <p className="text-md font-bold uppercase tracking-widest text-keploy-muted mb-3">
         On this page
       </p>
       <ul className="space-y-1">

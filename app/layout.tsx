@@ -6,7 +6,7 @@ import TableOfContents from '@/components/TableOfContents'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen transition-colors duration-300">
+      <body className="min-h-screen transition-colors duration-300" suppressHydrationWarning>
         <ThemeProvider>
           <Navbar />
 

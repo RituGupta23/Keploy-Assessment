@@ -1,0 +1,243 @@
+import Callout from '@/components/Callout'
+import CodeBlock from '@/components/CodeBlock'
+import Step from '@/components/Step'
+
+{/* Hero Section */}
+
+<div className="flex items-center gap-2 mb-4">
+    <span className="text-xs font-mono text-keploy-orange uppercase tracking-widest border border-keploy-orange/40 rounded px-2 py-0.5 bg-orange-500/10">Tutorial</span>
+    <span className="text-keploy-muted text-xs">5 min read</span>
+</div>
+
+# API Testing with Keploy: Go + Echo + PostgreSQL
+
+Building backend APIs is fun until testing starts to slow you down.
+Setting up mocks, defining interfaces, and writing expected responses by hand can take a lot of time.
+
+In this tutorial, we’ll take a **simple URL shortener app** using **Go, Echo, and PostgreSQL**, and then use Keploy to automatically capture and run API test cases.
+
+**No mocks**. **No manual test writing**. Just run your app and watch tests get created.
+  <div className="flex flex-wrap gap-3 mt-5">
+    {['Go', 'Echo', 'PostgreSQL', 'Keploy'].map(tag => (
+      <span key={tag} className="text-xs font-mono bg-keploy-card border border-keploy-border rounded px-2 py-1 text-gray-400">{tag}</span>
+    ))}
+  </div>
+
+<div id="what-is-keploy" />
+## What is Keploy?
+
+Keploy is an **open-source, no-code testing tool**.
+
+- It records real API traffic as your app runs
+- KeployCaptures database interactions automatically
+- Turns everything into reusable test cases with built-in mocks
+
+Later, you can simply replay those tests — no need to even run the database.
+
+
+<Callout type="tip" title="Why this matters for Go developers">
+Go is popular for building fast backend services. Keploy fits perfectly: it's lightweight, uses eBPF to intercept network calls at the OS level, and needs zero changes to your production code.
+</Callout>
+
+---
+
+<div id="prerequisites" />
+## Prerequisites
+
+Before we start, make sure you have the following installed:
+
+- **Go** — `Version >= 1.20` : [Installation guide](https://go.dev/doc/install)
+- **Docker** — for running PostgreSQL and Go application : [Install Docker](https://docs.docker.com/get-docker/)
+- **Git** — to clone the sample repo
+- **Keploy CLI** 
+
+<Callout type="warning" title="Don’t have Keploy installed yet?">
+ Before running this sample, make sure Keploy is installed on your system.
+<button rel="noopener noreferrer" className="text-white font-bold bg-yellow-600 text-xl mt-5 py-2 px-4 rounded-lg">
+    <a  target="_blank" rel="noopener noreferrer" href="https://keploy.io/docs/server/installation/">👉 Installation Guide</a>
+</button>
+</Callout>
+
+---
+
+
+<div id="step-1-clone" />
+## Step 1: Clone the Sample Application
+
+We’ll use an offical Keploy sample URL shortener app built with Go.
+
+<CodeBlock
+  code={`git clone https://github.com/keploy/samples-go.git 
+  cd samples-go/echo-sql `}
+/>
+
+Now install the Go dependencies:
+
+<CodeBlock code={`go mod download`} />
+
+---
+
+<div id="step-2-configure" />
+## Step 2: Configure the Database Host
+
+Open main.go and locate line 47.
+
+Change the database host from: `localhost` to `postgres`.
+
+This is required because **we will run the application and database using Docker Compose**, where services communicate via container names.
+
+---
+
+<div id="step-3-start-recording" />
+## Step 3: Start Recording API Calls
+
+This is where **Keploy** enters the game.
+
+In a new terminal, we’ll start the application and use Keploy to record our API interactions.
+
+<CodeBlock code={`keploy record -c "docker compose up" --container-name "echoApp" --build-delay 50`}/>
+
+What this does:
+
+- Starts your app using Docker Compose
+- Waits 50 seconds for services to initialize
+- Begins capturing API calls and database interactions
+
+<Callout type="info" title="What does --build-delay do?">
+It gives Docker some time to:
+- build images
+- pull dependencies
+- start services
+
+If everything is already up and running, you can skip this flag.
+</Callout>
+
+The terminal will look like:
+
+<img src="keploy_record.png" alt="Keploy Record" />
+
+---
+
+<div id="step-4-generate-test-cases" />
+## Step 4: Generate Test Cases
+
+Keploy creates test cases by capturing real API calls. So let’s make a few.
+
+### Create a Short URL
+Run this `curl` command in new terminal to make API calls.
+
+<CodeBlock language="bash" code={`curl --request POST
+    --url http://localhost:8082/url
+    --header 'content-type: application/json'
+    --data '{
+    "url": "https://github.com"
+}'`} />
+
+### Expected Sample Response
+
+<CodeBlock language="bash" code={`{
+    "ts":1773915113211620341,
+    "url":"http://localhost:8082/4KepjkTT"
+  }
+`} />
+
+Don’t worry about the `ts` field. It changes every time and Keploy automatically ignores it during testing.
+
+### Access the Original URL from Shortened URL
+
+<CodeBlock
+  language="bash"
+  code={`curl --request GET
+    --url http://localhost:8082/4KepjkTT`}
+/>
+
+Or open this `http://localhost:8082/4KepjkTT` in your browser.
+
+Both requests are now recorded automatically.
+
+---
+
+<div id="step-5-understand-what-keploy-generated" />
+## Step 5: Understand What Keploy Generated
+
+After making API calls, Keploy automatically creates a new folder named `keploy` which contains:
+- Test cases
+- Database interactions as mocks
+
+<Callout type="info" title="What’s special?">
+- Database calls (Postgres) are recorded and mocked
+- No need to manually write mock data
+- Captured request and response data
+</Callout>
+
+---
+
+<div id="step-6-run-the-generated-test-cases" />
+## Step 6: Run the Generated Test Cases
+
+Now stop the recording and run the tests:
+
+<CodeBlock
+  code={`keploy test -c "docker compose up" --container-name "echoApp" --build-delay 50 --delay 10`}
+/>
+
+The terminal will look like:
+
+<img className="mb-4" src="keploy_test.png" alt="Keploy Test" />
+
+
+What happens here:
+
+- Keploy replays the caputured API calls
+- Keploy uses mocks instead of real database
+- Keploy verifies responses automatically
+
+You don’t need to:
+- setup test data
+- write mocks
+
+**Your application behaves like it’s connected to a real database, even though it isn’t. 😄**
+
+---
+
+
+<div id="why-use-keploy" />
+## Why use Keploy?
+
+Using Keploy gives you:
+- **Automatic test case generation** from real traffic
+- **Built-in mocking** for databases and external services
+- **Faster testing** without writing boilerplate code
+- **Confidence to refactor** your logic as your output changes, Keploy will catch the regression istantly.
+- **Lightweight CI** where you can run tests without setting up a complex database
+
+<div id="wrapping-up" />
+## Wrapping Up 🎉
+
+In this guide, you:
+- Ran a Go + Echo + PostgreSQL app
+- Integrated Keploy for API testing
+- Recorded API interactions effortlessly
+- Generated test cases automatically
+- Did all this without writing a single line of test code or setting up mocks
+
+With Keploy, you can confidently refactor your code, knowing that any regressions will be caught by the recorded tests. Plus, the lightweight nature of Keploy means you don't need a complex database setup for your CI/CD pipeline.
+
+**Happy coding!😄**
+
+---
+
+<div className="mt-10 p-5 rounded-xl border border-keploy-border bg-keploy-card flex flex-col sm:flex-row items-start sm:items-center gap-4">
+  <span className="text-3xl">🐰</span>
+  <div>
+    <p className="dark:text-white font-semibold mb-1">Found this helpful?</p>
+    <p className="text-gray-600 dark:text-gray-400 text-sm">Star Keploy on GitHub and share this tutorial with your team.</p>
+  </div>
+
+  <button
+    className="text-md ml-auto shrink-0 bg-keploy-orange text-white text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+  >
+   <a target="_blank" rel="noopener noreferrer" href="https://github.com/keploy/keploy">⭐ Star on GitHub</a>
+    
+  </ button>
+</div>

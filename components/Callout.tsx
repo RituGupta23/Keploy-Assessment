@@ -19,11 +19,11 @@ const styles: Record<CalloutType, { border: string; icon: string; label: string;
     titleColor: 'text-blue-400',
   },
   warning: {
-    border: 'border-yellow-500',
-    bg: 'bg-yellow-500/10',
-    icon: '⚠️',
+    border: 'border-yellow-600',
+    bg: 'bg-yellow-600/10',
+    icon: '',
     label: 'Warning',
-    titleColor: 'text-yellow-400',
+    titleColor: 'text-yellow-600',
   },
   success: {
     border: 'border-green-500',
@@ -45,11 +45,11 @@ export default function Callout({ type = 'info', title, children }: CalloutProps
   const s = styles[type]
   return (
     <div className={`border-l-4 ${s.border} ${s.bg} rounded-r-xl p-4 mb-4`}>
-      <div className={`flex items-center gap-2 font-semibold mb-1 ${s.titleColor}`}>
+      <div className={`flex text-xl items-center gap-2 font-semibold mb-1 ${s.titleColor}`}>
         <span>{s.icon}</span>
         <span>{title || s.label}</span>
       </div>
-      <div className="dark:text-gray-300 text-gray-600 text-sm leading-6">{children}</div>
+      <div className="dark:text-gray-300 text-gray-600 text-base leading-6">{children}</div>
     </div>
   )
 }

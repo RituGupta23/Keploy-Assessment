@@ -11,17 +11,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-2xl font-semibold dark:text-white text-gray-900 mb-3 mt-10 pb-2 border-b dark:border-[#2a2a2a] border-gray-200">
+      <h2 className="text-3xl font-semibold dark:text-white text-gray-900 mb-3 mt-10 pb-2 border-b dark:border-[#2a2a2a] border-gray-200">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-lg font-semibold dark:text-white text-gray-900 mb-2 mt-6">
+      <h3 className="text-xl font-semibold dark:text-white text-gray-900 mb-2 mt-6">
         {children}
       </h3>
     ),
     p: ({ children }) => (
-      <p className="dark:text-gray-300 text-gray-600 leading-7 mb-4">{children}</p>
+      <p className="text-lg dark:text-gray-300 text-gray-800 leading-7 mb-4">{children}</p>
     ),
     a: ({ children, href }) => (
       <a
@@ -34,12 +34,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </a>
     ),
     ul: ({ children }) => (
-      <ul className="list-disc list-inside dark:text-gray-300 text-gray-600 mb-4 space-y-1 pl-2">
+      <ul className="text-lg list-disc list-inside dark:text-gray-300 text-gray-600 mb-4 space-y-1 pl-2">
         {children}
       </ul>
     ),
     ol: ({ children }) => (
-      <ol className="list-decimal list-inside dark:text-gray-300 text-gray-600 mb-4 space-y-1 pl-2">
+      <ol className="text-lglist-decimal list-inside dark:text-gray-700 text-gray-600 mb-4 space-y-1 pl-2">
         {children}
       </ol>
     ),
@@ -83,6 +83,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </blockquote>
     ),
     hr: () => <hr className="dark:border-[#2a2a2a] border-gray-200 my-8" />,
+    br: () => <br />,
     Callout,
     Step,
     CodeBlock,

@@ -17,11 +17,6 @@ Setting up mocks, defining interfaces, and writing expected responses by hand ca
 In this tutorial, we’ll take a **simple URL shortener app** using **Go, Echo, and PostgreSQL**, and then use Keploy to automatically capture and run API test cases.
 
 **No mocks**. **No manual test writing**. Just run your app and watch tests get created.
-  <div className="flex flex-wrap gap-3 mt-5">
-    {['Go', 'Echo', 'PostgreSQL', 'Keploy'].map(tag => (
-      <span key={tag} className="text-xs font-mono bg-keploy-card border border-keploy-border rounded px-2 py-1 text-gray-400">{tag}</span>
-    ))}
-  </div>
 
 <div id="what-is-keploy" />
 ## What is Keploy?
@@ -29,10 +24,10 @@ In this tutorial, we’ll take a **simple URL shortener app** using **Go, Echo, 
 Keploy is an **open-source, no-code testing tool**.
 
 - It records real API traffic as your app runs
-- KeployCaptures database interactions automatically
+- It captures database interactions automatically
 - Turns everything into reusable test cases with built-in mocks
 
-Later, you can simply replay those tests — no need to even run the database.
+Later, you can simply replay those tests, no need to even run the database.
 
 
 <Callout type="tip" title="Why this matters for Go developers">
@@ -84,6 +79,8 @@ Open main.go and locate line 47.
 
 Change the database host from: `localhost` to `postgres`.
 
+<img className="mb-6" src="keploy_main.jpeg" alt="Keploy Main" />
+
 This is required because **we will run the application and database using Docker Compose**, where services communicate via container names.
 
 ---
@@ -126,9 +123,9 @@ Keploy creates test cases by capturing real API calls. So let’s make a few.
 ### Create a Short URL
 Run this `curl` command in new terminal to make API calls.
 
-<CodeBlock language="bash" code={`curl --request POST
-    --url http://localhost:8082/url
-    --header 'content-type: application/json'
+<CodeBlock language="bash" code={`curl --request POST \\
+    --url http://localhost:8082/url \\
+    --header 'content-type: application/json' \\
     --data '{
     "url": "https://github.com"
 }'`} />
@@ -147,7 +144,7 @@ Don’t worry about the `ts` field. It changes every time and Keploy automatical
 
 <CodeBlock
   language="bash"
-  code={`curl --request GET
+  code={`curl --request GET \\
     --url http://localhost:8082/4KepjkTT`}
 />
 
@@ -163,6 +160,9 @@ Both requests are now recorded automatically.
 After making API calls, Keploy automatically creates a new folder named `keploy` which contains:
 - Test cases
 - Database interactions as mocks
+
+The folder will look like this:
+<img className="mb-6 w-60" src="keploy_folder.jpeg" alt="Keploy Folder" />
 
 <Callout type="info" title="What’s special?">
 - Database calls (Postgres) are recorded and mocked

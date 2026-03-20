@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useTheme } from './ThemeProvider'
-import { Moon, Sun } from 'lucide-react'
+import { Github, Moon, Sun } from 'lucide-react'
 
 export default function Navbar() {
   const { dark, toggle } = useTheme()
@@ -33,9 +33,9 @@ export default function Navbar() {
             href="https://github.com/keploy/samples-go"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-keploy-muted text-sm transition-colors hover:text-[#FF6B35] hidden sm:block"
+            className="w-9 h-9 rounded-full border dark:border-[#2a2a2a] border-gray-200 dark:bg-[#1a1a1a] bg-white dark:text-gray-300 text-gray-600 hover:border-[#FF6B35]/50 transition-all flex items-center justify-center shadow-sm"
           >
-            GitHub →
+           <Github />
           </a>
           <button
             onClick={toggle}
